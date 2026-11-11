@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vi Pulse · ROI Guarantee</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.34.0/dist/tabler-icons-300.min.css">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="logo" aria-label="Vi">
+      <svg viewBox="0 0 39 34" width="34" height="30"><path fill="#fff" fill-rule="evenodd" clip-rule="evenodd" d="M33.5846 22.2114L33.5846 34.0027L39 34.0027L39 7.21489L33.5846 22.2114ZM38.9209 0.179691L33.5846 0.17969L33.5846 14.8204L38.9209 0.179691ZM18.7164 34.0027L31.1149 0.17969L25.4144 0.17969L15.5812 28.3088L5.79544 0.179688L0 0.179688L12.446 34.0027L18.7164 34.0027Z"/></svg>
+    </div>
+    <nav class="nav">
+      <a class="nav-item"><i class="ti ti-layout-board-split"></i><span>Dashboard</span></a>
+      <a class="nav-item"><i class="ti ti-plug-connected"></i><span>Sources</span></a>
+      <a class="nav-item"><i class="ti ti-presentation-analytics"></i><span>Reports</span></a>
+      <a class="nav-item"><i class="ti ti-align-box-left-middle"></i><span>Insights</span></a>
+      <a class="nav-item active"><i class="ti ti-shield-check"></i><span>Guarantee</span><em class="new">New</em></a>
+    </nav>
+    <div class="workspace" title="PharmaCorp workspace">
+      <svg viewBox="0 0 40 40" width="30" height="30"><path d="M8 8 L32 32 M32 8 L8 32" stroke="#2bb39a" stroke-width="3.2" stroke-linecap="round"/><path d="M20 6 L20 34" stroke="#6146f6" stroke-width="2.2" stroke-linecap="round" opacity=".55"/></svg>
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <button class="icon-btn back" aria-label="Back"><i class="ti ti-arrow-left"></i></button>
+      <div class="top-right">
+        <button class="icon-btn" aria-label="Apps"><i class="ti ti-grid-dots"></i></button>
+        <div class="user"><div class="avatar">GS</div><span>Gal Shapiro</span></div>
+      </div>
+    </header>
+
+    <main class="content">
+      <div class="page-head">
+        <div>
+          <h1>ROI Guarantee</h1>
+          <p class="sub">Holdout-verified ROI for every pilot. The ranges stay valid no matter how often you check, so a pilot can be certified the day the evidence is in.</p>
+        </div>
+      </div>
+
+      <div class="toolbar">
+        <div class="filters">
+          <button class="select"><i class="ti ti-calendar"></i><span>90-day POC</span><i class="ti ti-caret-down-filled"></i></button>
+          <button class="select"><span>All verticals</span><i class="ti ti-caret-down-filled"></i></button>
+          <button class="select"><span>Confidence 95%</span><i class="ti ti-caret-down-filled"></i></button>
+        </div>
+        <div class="tool-right">
+          <span class="updated" id="updated"></span>
+          <button class="link-btn" id="download"><i class="ti ti-download"></i>Download Results</button>
+        </div>
+      </div>
+
+      <section class="kpis" id="kpis"></section>
+
+      <section class="row two">
+        <div class="card chart-card">
+          <div class="card-head">
+            <div class="ch-title"><i class="ti ti-chart-line"></i><span id="chartTitle">ROI trajectory</span></div>
+            <div class="seg" id="seg">
+              <button class="on" data-mode="cs"><i class="ti ti-shield-check"></i>Anytime-valid</button>
+              <button data-mode="naive"><i class="ti ti-eye"></i>Daily t-test</button>
+            </div>
+          </div>
+          <div class="chart-sub" id="chartSub"></div>
+          <div id="chart" class="chart"></div>
+          <div class="legend" id="legend"></div>
+        </div>
+        <div class="card verdict-card" id="verdict"></div>
+      </section>
+
+      <section class="card table-card">
+        <div class="card-head">
+          <div class="ch-title"><i class="ti ti-flask"></i><span>Pilots</span></div>
+          <span class="muted small" id="pilotCount"></span>
+        </div>
+        <table class="tbl" id="tbl"></table>
+      </section>
+
+      <section class="row two-eq">
+        <div class="card sim-card">
+          <div class="card-head"><div class="ch-title"><i class="ti ti-clock-bolt"></i><span>Time to a guarantee decision</span></div><span class="info" title="Replays the selected pilot's design 100 times at today's estimated ROI and records the first day each method either certifies 4X or rules it out."><i class="ti ti-info-circle"></i></span></div>
+          <div id="simDays" class="sim-body"></div>
+        </div>
+        <div class="card sim-card">
+          <div class="card-head"><div class="ch-title"><i class="ti ti-alert-triangle"></i><span>Why not check a daily t-test?</span></div><span class="info" title="Replays the selected pilot's design 100 times with a true ROI of 3.6X (guarantee missed) and checks every day of the POC."><i class="ti ti-info-circle"></i></span></div>
+          <div id="simFalse" class="sim-body"></div>
+        </div>
+      </section>
+
+      <section class="card method">
+        <div class="ch-title"><i class="ti ti-math-function"></i><span>How the range is computed</span></div>
+        <p>Each member whose attribution window has closed contributes a holdout-weighted outcome, <code>(A/π − (1−A)/(1−π)) · (Y − m(X))</code>, where <code>m</code> predicts the outcome from the member's pre-period value using only members that matured on earlier days. That keeps the estimate unbiased under randomization while removing the variance the pre-period already explains. The range is an asymptotic confidence sequence (Waudby-Smith et al., <i>Annals of Statistics</i> 2024): it holds at every day simultaneously, so checking daily does not inflate false certifications. ROI is incremental value divided by Vi fees per treated member.</p>
+      </section>
+
+      <footer class="foot">Unofficial concept demo by Mohith Gajjela. Not affiliated with Vi. Synthetic data.</footer>
+    </main>
+  </div>
+
+  <button class="vi-fab" id="fab" aria-label="Vi Assistant">
+    <svg viewBox="0 0 39 34" width="26" height="23"><path fill="#fff" fill-rule="evenodd" d="M33.5846 22.2114L33.5846 34.0027L39 34.0027L39 7.21489L33.5846 22.2114ZM38.9209 0.179691L33.5846 0.17969L33.5846 14.8204L38.9209 0.179691ZM18.7164 34.0027L31.1149 0.17969L25.4144 0.17969L15.5812 28.3088L5.79544 0.179688L0 0.179688L12.446 34.0027L18.7164 34.0027Z"/></svg>
+    <span class="badge">1</span>
+  </button>
+  <div class="assistant" id="assistant" hidden>
+    <div class="as-head"><div class="as-id"><span class="as-av">Vi</span><b>Vi Assistant</b></div><div class="as-icons"><i class="ti ti-layout-sidebar-right"></i><i class="ti ti-trash"></i><i class="ti ti-x" id="asClose"></i></div></div>
+    <div class="as-body" id="asBody"></div>
+    <div class="as-input"><div class="as-field">Type your prompt here...</div><button class="as-send"><i class="ti ti-send-2"></i></button></div>
+    <div class="as-chips"><span><i class="ti ti-chart-bar"></i>Reports</span><span># What's New <i class="ti ti-eye"></i></span><span># All Reports <i class="ti ti-eye"></i></span></div>
+  </div>
+</div>
+<script src="core.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,131 @@
+{
+ "reps": 100,
+ "generated_from": "core.js runPortfolio() + simulateDecisionDays/falseCertification, seeds 2026/4242",
+ "pilots": {
+  "zx-activate": {
+   "dec": {
+    "reps": 100,
+    "adj": {
+     "rate": 0.95,
+     "median": 49
+    },
+    "raw": {
+     "rate": 0.53,
+     "median": 83
+    },
+    "naiveCert": {
+     "rate": 0.9,
+     "median": 31
+    }
+   },
+   "fal": {
+    "reps": 100,
+    "naive": 0.22,
+    "cs": 0,
+    "csRaw": 0,
+    "trueROI": 3.6
+   },
+   "est": 6.836933494108598
+  },
+  "msk-enroll": {
+   "dec": {
+    "reps": 100,
+    "adj": {
+     "rate": 0.99,
+     "median": 33
+    },
+    "raw": {
+     "rate": 0.87,
+     "median": 51
+    },
+    "naiveCert": {
+     "rate": 0.98,
+     "median": 22
+    }
+   },
+   "fal": {
+    "reps": 100,
+    "naive": 0.16,
+    "cs": 0,
+    "csRaw": 0,
+    "trueROI": 3.6
+   },
+   "est": 7.9153146941540475
+  },
+  "zx-adherence": {
+   "dec": {
+    "reps": 100,
+    "adj": {
+     "rate": 0,
+     "median": null
+    },
+    "raw": {
+     "rate": 0.04,
+     "median": null
+    },
+    "naiveCert": {
+     "rate": 0.28,
+     "median": null
+    }
+   },
+   "fal": {
+    "reps": 100,
+    "naive": 0.14,
+    "cs": 0,
+    "csRaw": 0,
+    "trueROI": 3.6
+   },
+   "est": 3.966049019358893
+  },
+  "peak-react": {
+   "dec": {
+    "reps": 100,
+    "adj": {
+     "rate": 1,
+     "median": 33
+    },
+    "raw": {
+     "rate": 0.9,
+     "median": 50
+    },
+    "naiveCert": {
+     "rate": 0.03,
+     "median": null
+    }
+   },
+   "fal": {
+    "reps": 100,
+    "naive": 0.14,
+    "cs": 0,
+    "csRaw": 0.01,
+    "trueROI": 3.6000000000000005
+   },
+   "est": 1.9566901640174414
+  },
+  "lake-sched": {
+   "dec": {
+    "reps": 100,
+    "adj": {
+     "rate": 1,
+     "median": 17
+    },
+    "raw": {
+     "rate": 1,
+     "median": 17
+    },
+    "naiveCert": {
+     "rate": 0,
+     "median": null
+    }
+   },
+   "fal": {
+    "reps": 100,
+    "naive": 0.02,
+    "cs": 0,
+    "csRaw": 0,
+    "trueROI": 3.6
+   },
+   "est": 0.3407610380178082
+  }
+ }
+}
