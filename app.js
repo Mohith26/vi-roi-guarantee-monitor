@@ -118,7 +118,7 @@
     for (const v of yt) g += `<line x1="${m.l}" x2="${m.l + iw}" y1="${y(v)}" y2="${y(v)}" stroke="#e7e6ec" stroke-dasharray="3 4"/><text x="${m.l - 10}" y="${y(v) + 4}" text-anchor="end" font-size="11" fill="#6f6c7a">${v}X</text>`;
     for (let d = 0; d <= V.POC_DAYS; d += 10) {
       g += `<line x1="${x(d)}" x2="${x(d)}" y1="${m.t}" y2="${m.t + ih}" stroke="#f0eff4" stroke-dasharray="3 4"/>`;
-      const isToday = Math.abs(d - p.today) < 4;
+      const isToday = Math.abs(d - p.today) < 6;
       if (!isToday) g += `<text x="${x(d)}" y="${H - 12}" text-anchor="middle" font-size="11" fill="#6f6c7a">${md(dateOf(p, d))}</text>`;
     }
     g += `<text x="${x(p.today)}" y="${H - 12}" text-anchor="middle" font-size="11.5" font-weight="700" fill="#15121c">Today</text>`;
@@ -211,7 +211,7 @@
     const pos = (val) => ((Math.max(dom[0], Math.min(dom[1], val)) - dom[0]) / (dom[1] - dom[0])) * 100;
     const notes = {
       certified: `The lower end of the range has stayed above 4X since day ${v.day}, so the guarantee holds at 95% confidence even though this page has been checked every day.`,
-      downside: `The whole range has been below 1X since day ${v.day}. Downside protection applies; pausing the program now saves about ${money(p.spec.fee * p.spec.perDay * 0.957 * (1 - p.spec.holdout) * (V.POC_DAYS - p.today))} in remaining fees.`,
+      downside: `The whole range has been below 1X since day ${v.day}. Downside protection applies; pausing the program now saves about ${money(p.spec.fee * p.spec.perDay * 0.957 * (1 - p.spec.holdout) * Math.max(0, V.POC_DAYS - p.spec.window - p.today))} in remaining fees.`,
       below: `The range rules out 4X${L.lo >= 1 ? ' but confirms ROI above 1X' : ''}. Worth re-scoping targeting before the POC ends rather than waiting for day 90.`,
       monitoring: v.projected ? `Not decided yet. If today's effect holds, the lower bound crosses 4X around day ${v.projected}.` : `The estimate sits too close to 4X to separate in 90 days at this holdout size. A larger holdout or longer window would be needed.`
     };
@@ -372,5 +372,10 @@
 
   const upd = new Date(Date.parse(V.TODAY_ISO + 'T00:00:00Z'));
   $('updated').textContent = 'Last updated: ' + upd.toLocaleDateString('en-US', { month: 'short', timeZone: 'UTC' }) + '-' + upd.getUTCDate() + '-' + upd.getUTCFullYear();
+  // optional deep-link state: ?pilot=<id>&mode=naive&assistant=1
+  const qs = new URLSearchParams(location.search);
+  if (qs.get('pilot') && byId[qs.get('pilot')]) state.sel = qs.get('pilot');
+  if (qs.get('mode') === 'naive') { state.mode = 'naive'; $('seg').querySelectorAll('button').forEach((q) => q.classList.toggle('on', q.dataset.mode === 'naive')); }
   renderKPIs(); renderTable(); renderChart(); renderVerdict(); renderSims();
+  if (qs.get('assistant') === '1') { $('assistant').hidden = false; renderAssistant(); }
 })();
